@@ -1,8 +1,6 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
-using log4net.Config;
+﻿using CcvSignIn.Service;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,19 +14,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CcvSignIn
+namespace CcvSignIn.Pages.Settings
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Newcomers.xaml
     /// </summary>
-    public partial class MainWindow : ModernWindow
+    public partial class Newcomers : UserControl
     {
-        public MainWindow()
+        public Newcomers()
         {
             InitializeComponent();
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-GB");
-            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-GB");
-            XmlConfigurator.Configure();
+            DataContext = new NewcomersViewModel();
         }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var context = ((NewcomersViewModel)DataContext);
+        }
+
+        
     }
 }

@@ -39,13 +39,34 @@ namespace CcvSignIn.Pages
             // Process open file dialog box results
             if (result == true)
             {
-                ((HomeViewModel)DataContext).Children = new CsvService().LoadInputData(dlg.FileName);
+
+                ((HomeViewModel)DataContext).DataFile = dlg.FileName;
+                ((HomeViewModel)DataContext).Children = new CsvService().LoadData(dlg.FileName);
             }
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
             ((HomeViewModel)DataContext).SignIn();
+        }
+
+        private void NewcomerButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new NewcomerDialogue { Title = "Newcomer details" };
+
+            dlg.ShowDialog();
+
+            var addNewcomer = dlg.DialogResult.HasValue ? (bool)dlg.DialogResult : false;
+            var newcomerDialogueViewModel = (NewcomerDialogueViewModel)dlg.DataContext;
+
+            if (addNewcomer 
+                && !string.IsNullOrEmpty(newcomerDialogueViewModel.First)
+                && !string.IsNullOrEmpty(newcomerDialogueViewModel.Last))
+            {
+                ((HomeViewModel)DataContext).AddNewcomer(
+                    newcomerDialogueViewModel.First, 
+                    newcomerDialogueViewModel.Last);
+            }
         }
     }
 }

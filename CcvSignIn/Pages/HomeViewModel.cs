@@ -1,17 +1,15 @@
 ﻿using CcvSignIn.Model;
+using CcvSignIn.Service;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CcvSignIn.Pages
 {
-    class HomeViewModel : INotifyPropertyChanged
+    class HomeViewModel : ViewModelBase
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(HomeViewModel));
 
@@ -21,6 +19,7 @@ namespace CcvSignIn.Pages
         private List<Child> children;
         private Child selectedChild;
         private Room selectedRoom;
+        private PrintService printService = PrintService.Instance;
 
         #endregion
 
@@ -45,12 +44,13 @@ namespace CcvSignIn.Pages
                     ).ToList<Child>();
                 }
 
-                return children == null ? null : children.ToList<Child>(); 
+                return children == null ? null : children.OrderBy(c => c.Last).ToList<Child>(); 
             }
             set
             {
                 children = value;
                 NotifyPropertyChanged("Children");
+                NotifyPropertyChanged("NewcomerButtonEnabled");
             } 
         }
 
@@ -64,6 +64,7 @@ namespace CcvSignIn.Pages
             {
                 if (filterValue == value) return;
                 filterValue = value;
+                NotifyPropertyChanged("FilterValue");
                 NotifyPropertyChanged("Children");
             }
         }
@@ -101,7 +102,7 @@ namespace CcvSignIn.Pages
             get 
             {
                 if (selectedChild != null) return Visibility.Visible;
-                return Visibility.Hidden;
+                return Visibility.Collapsed;
             }
         }
 
@@ -122,6 +123,22 @@ namespace CcvSignIn.Pages
                 selectedRoom = value;
                 NotifyPropertyChanged("SelectedRoom");
                 NotifyPropertyChanged("SignInEnabled");
+                NotifyPropertyChanged("SignInButtonText");
+                
+            }
+        }
+        
+        /// <summary>
+        /// Gets the text that should be displayed on the sign in button.
+        /// </summary>
+        public string SignInButtonText 
+        {
+            get
+            {
+                if (selectedChild != null && string.IsNullOrEmpty(selectedChild.Room)) return "Sign in";
+                if (selectedRoom != null && selectedRoom.Title == SelectedChild.Room) return "Clear";
+                if (selectedRoom != null && selectedRoom.Title != SelectedChild.Room) return "Change";
+                return "Sign in";
             }
         }
 
@@ -132,6 +149,19 @@ namespace CcvSignIn.Pages
         {
             get { return SelectedRoom != null; }
         }
+
+        /// <summary>
+        /// Gets a flag to indicate if the newcomer button should be enabled.
+        /// </summary>
+        public bool NewcomerButtonEnabled
+        {
+            get { return children != null && children.Count > 0; }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the file containing the data.
+        /// </summary>
+        public String DataFile { get; set; }
 
         #endregion
 
@@ -159,42 +189,85 @@ namespace CcvSignIn.Pages
         {
             if (selectedChild != null && SelectedRoom != null)
             {
-                selectedChild.Room = SelectedRoom.Title;
-                selectedChild.SignedInAt = DateTime.Now;
+                if (string.IsNullOrEmpty(SelectedChild.Room)) 
+                {
+                    // Normal sign in
 
-                logger.InfoFormat(
-                    "Signed in {0} {1} ({2}) to {3}",
-                    selectedChild.First,
-                    selectedChild.Last,
-                    selectedChild.Id,
-                    SelectedRoom.Title);
+                    logger.InfoFormat(
+                        "Signed in {0} ({1}) to {2}",
+                        selectedChild.Fullname,
+                        selectedChild.Id,
+                        SelectedRoom.Title);
 
-                new CsvService().SaveOutputData(CcvSignIn.Properties.Settings.Default.OutputFilename, children);
+                    selectedChild.Room = SelectedRoom.Title;
+                    selectedChild.SignedInAt = DateTime.Now;
 
-                FireChangeEvents();
+                    printService.Print(selectedChild);
+                }
+                else if (selectedRoom.Title == SelectedChild.Room)
+                {
+                    // Clear details
+
+                    logger.InfoFormat(
+                        "Cleared details for {0} ({1}), was signed into {2}",
+                        selectedChild.Fullname,
+                        selectedChild.Id,
+                        SelectedChild.Room);
+
+                    selectedChild.Room = null;
+                    selectedChild.SignedInAt = null;
+                    selectedRoom = null;
+                }
+                else if (selectedRoom.Title != SelectedChild.Room)
+                {
+                    // Change sign in room
+
+                    logger.InfoFormat(
+                        "Changed sign in details for {0} ({1}) from {2} to {3}",
+                        selectedChild.Fullname,
+                        selectedChild.Id,
+                        SelectedChild.Room,
+                        SelectedRoom.Title);
+
+                    selectedChild.Room = SelectedRoom.Title;
+                    selectedChild.SignedInAt = DateTime.Now;
+
+                    printService.Print(selectedChild);
+                }
+
+                new CsvService().SaveData(DataFile, children);
+
+                NotifyPropertyChanged("SelectedRoom");
+                NotifyPropertyChanged("SignInEnabled");
+                NotifyPropertyChanged("SignInButtonText");
+                NotifyPropertyChanged("Children");
             }
         }
 
-        #region Utility Methods
-
-        private void NotifyPropertyChanged(string propertyName)
+        /// <summary>
+        /// Adds a new child to the list and selects them to allow immediate sign in
+        /// </summary>
+        public void AddNewcomer(string first, string last)
         {
-            var eventToFire = PropertyChanged;
-            if (eventToFire != null)
-                eventToFire(this, new PropertyChangedEventArgs(propertyName));
+            var id = Properties.Settings.Default.NextNewcomerId;
+
+            children.Add(new Child
+                {
+                    Id = id,
+                    First = first,
+                    Last = last,
+                    IsNewcomer = true,
+                });
+
+            new CsvService().SaveData(DataFile, children);
+
+            Properties.Settings.Default.NextNewcomerId += 1;
+            Properties.Settings.Default.Save();
+
+            if (FilterValue == last) NotifyPropertyChanged("Children");
+            else FilterValue = last;
+
+            SelectedChild = children.FirstOrDefault(c => c.Id == id);
         }
-
-        private void FireChangeEvents()
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(""));
-        }
-
-        #endregion
-
-        #region Event Handlers
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        #endregion
     }
 }

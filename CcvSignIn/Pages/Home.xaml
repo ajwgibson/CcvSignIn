@@ -29,9 +29,14 @@
                                         VerticalAlignment="Top" 
                                         HorizontalAlignment="Left" Width="200"
                                         Text="{Binding FilterValue}"/>
-                    <Button Grid.Column="1" HorizontalAlignment="Right" 
-                            Content="Load data"
-                            Click="LoadDataButton_Click"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" >
+                        <Button Content="Newcomer"
+                                Click="NewcomerButton_Click"
+                                IsEnabled="{Binding NewcomerButtonEnabled}"
+                                Margin="0,0,2,0" />
+                        <Button Content="Load data"
+                                Click="LoadDataButton_Click"/>
+                    </StackPanel>
                 </Grid>
             </StackPanel>
             <DataGrid IsReadOnly="True" AutoGenerateColumns="False" 
@@ -39,19 +44,19 @@
                         ItemsSource="{Binding Children}" 
                         SelectedItem="{Binding SelectedChild}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Last name" Binding="{Binding Last}"/>
+                    <DataGridTextColumn Header="Last name" Binding="{Binding Last}" />
                     <DataGridTextColumn Header="First name" Binding="{Binding First}"/>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}"/>
-                    <DataGridTextColumn Header="Time" Binding="{Binding SignedInAt}"/>
+                    <DataGridTextColumn Header="Time" Binding="{Binding SignedInAt, StringFormat=g}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
         
         <GridSplitter Grid.Column="1" />
-        
+
         <StackPanel Grid.Column="2" Margin="20,0,0,0">
-            
+
             <TextBlock Text="SELECTED CHILD" Style="{StaticResource Heading2}" Margin="0,0,0,12" />
 
             <StackPanel x:Name="Form" Orientation="Vertical" Visibility="{Binding SelectedChildVisibility}">
@@ -77,7 +82,7 @@
                     <Label Content="First name" />
                     <TextBlock Text="{Binding SelectedChild.First, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
                 </StackPanel>
-                    
+
                 <StackPanel>
                     <Label Content="Last name" />
                     <TextBlock Text="{Binding SelectedChild.Last, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
@@ -90,39 +95,26 @@
 
                 <StackPanel>
                     <Label Content="Environment" VerticalAlignment="Top"/>
-                    
                     <ListBox ItemsSource="{Binding Rooms}"
-                             SelectedItem="{Binding SelectedRoom}">
+                            SelectedItem="{Binding SelectedRoom}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <RadioButton Content="{Binding DisplayName}" 
-                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
-                                             ToolTip="{Binding Description}" />
+                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                                            ToolTip="{Binding Description}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    
-                    <!--<ListView ItemsSource="{Binding Rooms}" 
-                              SelectionMode="Single"
-                              SelectedItem="{Binding SelectedRoom}" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Environment" DisplayMemberBinding="{Binding Title}"        Width="120" />
-                                <GridViewColumn Header="Room"        DisplayMemberBinding="{Binding Colour}"       Width="60" />
-                                <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}"  Width="200" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>-->
-                    
                 </StackPanel>
 
-                <Button Content="Sign in" 
-                        Margin="100,16,0,0" HorizontalAlignment="Left" 
-                        IsEnabled="{Binding SignInEnabled}" 
-                        Click="SignInButton_Click" />
-                    
+                <Button Content="{Binding SignInButtonText}" 
+                    Margin="100,16,0,0" HorizontalAlignment="Left" 
+                    IsEnabled="{Binding SignInEnabled}" 
+                    Click="SignInButton_Click" />
+
             </StackPanel>
-                
+
         </StackPanel>
+        
     </Grid>
 </UserControl>

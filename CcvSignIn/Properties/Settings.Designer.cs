@@ -23,12 +23,15 @@ namespace CcvSignIn.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("OutputData.csv")]
-        public string OutputFilename {
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int NextNewcomerId {
             get {
-                return ((string)(this["OutputFilename"]));
+                return ((int)(this["NextNewcomerId"]));
+            }
+            set {
+                this["NextNewcomerId"] = value;
             }
         }
     }
