@@ -37,13 +37,38 @@ namespace CcvSignIn
 
                 CsvContext context = new CsvContext();
 
-                var tmp = context.Read<Child>(filename, cfd).AsQueryable<Child>();
+                List<Child> children;
 
-                var children = (
-                    from c in tmp
-                    orderby c.Last, c.First
-                    select c
-                ).ToList();
+                try
+                {
+                    var tmp = context.Read<Child>(filename, cfd).AsQueryable<Child>();
+
+                    children = (
+                        from c in tmp
+                        orderby c.Last, c.First
+                        select c
+                    ).ToList();
+
+                }
+                catch (Exception e)
+                {
+                    // Horrible hack! Try a tab character instead of a comma as Excel can muck things up...
+                    var tmp = context.Read<Child>(
+                        filename,
+                        new CsvFileDescription
+                        {
+                            SeparatorChar = '\t',
+                            FirstLineHasColumnNames = cfd.FirstLineHasColumnNames,
+                            EnforceCsvColumnAttribute = cfd.EnforceCsvColumnAttribute,
+                            IgnoreUnknownColumns = cfd.IgnoreUnknownColumns
+                        }).AsQueryable<Child>();
+
+                    children = (
+                        from c in tmp
+                        orderby c.Last, c.First
+                        select c
+                    ).ToList();
+                }
 
                 foreach (var child in children)
                 {
