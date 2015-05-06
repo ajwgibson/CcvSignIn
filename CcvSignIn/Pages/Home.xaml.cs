@@ -26,25 +26,6 @@ namespace CcvSignIn.Pages
             DataContext = new HomeViewModel();
         }
 
-        private void LoadDataButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Configure open file dialog box
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.DefaultExt = ".csv";
-            dlg.Filter = "CSV files (.csv)|*.csv";
-
-            // Show open file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process open file dialog box results
-            if (result == true)
-            {
-
-                ((HomeViewModel)DataContext).DataFile = dlg.FileName;
-                ((HomeViewModel)DataContext).Children = new CsvService().LoadData(dlg.FileName);
-            }
-        }
-
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
             ((HomeViewModel)DataContext).SignIn();
@@ -66,6 +47,24 @@ namespace CcvSignIn.Pages
                 ((HomeViewModel)DataContext).AddNewcomer(
                     newcomerDialogueViewModel.First, 
                     newcomerDialogueViewModel.Last);
+            }
+        }
+
+        private void LoadDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Configure open file dialog box
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".csv";
+            dlg.Filter = "CSV files (.csv)|*.csv";
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                ((HomeViewModel)DataContext).DataFilename = dlg.FileName;
+                ((HomeViewModel)DataContext).Children = new CsvService().LoadData(dlg.FileName);
             }
         }
     }

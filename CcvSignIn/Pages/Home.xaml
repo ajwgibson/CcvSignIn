@@ -15,8 +15,13 @@
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <DockPanel Margin="0,0,20,0">
+        <DockPanel Margin="0,0,20,0" Grid.Row="0" Grid.Column="0">
             <StackPanel DockPanel.Dock="Top">
                 <TextBlock Text="CHILDREN" Style="{StaticResource Heading2}" Margin="0,0,0,12" />
                 <Grid>
@@ -34,11 +39,10 @@
                                 Click="NewcomerButton_Click"
                                 IsEnabled="{Binding NewcomerButtonEnabled}"
                                 Margin="0,0,2,0" />
-                        <Button Content="Load data"
-                                Click="LoadDataButton_Click"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
+            
             <DataGrid IsReadOnly="True" AutoGenerateColumns="False" 
                         SelectionMode="Single" SelectionUnit="FullRow"
                         ItemsSource="{Binding Children}" 
@@ -52,10 +56,10 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
-        
-        <GridSplitter Grid.Column="1" />
 
-        <StackPanel Grid.Column="2" Margin="20,0,0,0">
+        <GridSplitter Grid.Row="0" Grid.Column="1" />
+
+        <StackPanel Grid.Row="0" Grid.Column="2" Margin="20,0,0,0">
 
             <TextBlock Text="SELECTED CHILD" Style="{StaticResource Heading2}" Margin="0,0,0,12" />
 
@@ -100,8 +104,9 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <RadioButton Content="{Binding DisplayName}" 
-                                            IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
-                                            ToolTip="{Binding Description}" />
+                                             IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                                             IsEnabled="{Binding IsEnabled}"
+                                             ToolTip="{Binding Description}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -115,6 +120,19 @@
             </StackPanel>
 
         </StackPanel>
-        
+
+        <Grid Grid.Row="1" Grid.Column="0" Margin="0,40,0,0">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="{Binding DataFilename}" Style="{StaticResource Small}" Grid.Column="0" VerticalAlignment="Center"/>
+            <Button Content="Load data" HorizontalAlignment="Right" Grid.Column="1" Click="LoadDataButton_Click" />
+            
+        </Grid>
+
     </Grid>
+    
 </UserControl>

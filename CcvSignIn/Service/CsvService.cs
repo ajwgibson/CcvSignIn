@@ -50,7 +50,7 @@ namespace CcvSignIn
                     ).ToList();
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // Horrible hack! Try a tab character instead of a comma as Excel can muck things up...
                     var tmp = context.Read<Child>(

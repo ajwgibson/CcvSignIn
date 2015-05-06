@@ -20,6 +20,7 @@ namespace CcvSignIn.Pages
         private Child selectedChild;
         private Room selectedRoom;
         private PrintService printService = PrintService.Instance;
+        private string dataFilename;
 
         #endregion
 
@@ -158,10 +159,16 @@ namespace CcvSignIn.Pages
             get { return children != null && children.Count > 0; }
         }
 
-        /// <summary>
-        /// Gets or sets the name of the file containing the data.
-        /// </summary>
-        public String DataFile { get; set; }
+        public string DataFilename
+        {
+            get { return dataFilename; }
+            set
+            {
+                if (dataFilename == value) return;
+                dataFilename = value;
+                NotifyPropertyChanged("DataFilename");
+            }
+        }
 
         #endregion
 
@@ -177,6 +184,7 @@ namespace CcvSignIn.Pages
                     new Room { Title = "Allstars Junior", Colour = "Green",  Description = "P2 & P3" },
                     new Room { Title = "Allstars",        Colour = "Orange", Description = "P3 & P4" },
                     new Room { Title = "Allstars High",   Colour = "Purple", Description = "P5, P6 & P7" },
+                    new Room { Title = "Kids Serving",    Colour = "Any",    Description = "Kids under the age of 11 who are serving" },
                 };
         }
 
@@ -235,7 +243,7 @@ namespace CcvSignIn.Pages
                     printService.Print(selectedChild);
                 }
 
-                new CsvService().SaveData(DataFile, children);
+                new CsvService().SaveData(DataFilename, children);
 
                 NotifyPropertyChanged("SelectedRoom");
                 NotifyPropertyChanged("SignInEnabled");
@@ -259,7 +267,7 @@ namespace CcvSignIn.Pages
                     IsNewcomer = true,
                 });
 
-            new CsvService().SaveData(DataFile, children);
+            new CsvService().SaveData(DataFilename, children);
 
             Properties.Settings.Default.NextNewcomerId += 1;
             Properties.Settings.Default.Save();
