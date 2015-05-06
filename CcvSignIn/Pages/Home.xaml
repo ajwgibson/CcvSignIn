@@ -84,17 +84,17 @@
 
                 <StackPanel>
                     <Label Content="First name" />
-                    <TextBlock Text="{Binding SelectedChild.First, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding SelectedChild.First, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel>
                     <Label Content="Last name" />
-                    <TextBlock Text="{Binding SelectedChild.Last, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding SelectedChild.Last, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel>
                     <Label Content="Unique ID" />
-                    <TextBlock Text="{Binding SelectedChild.Id, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding SelectedChild.Id, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel>

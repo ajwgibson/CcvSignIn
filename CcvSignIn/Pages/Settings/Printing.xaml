@@ -25,14 +25,14 @@
 
                     <StackPanel>
                         <Label Content="Printer" />
-                        <TextBlock Text="{Binding Printer}" Style="{StaticResource Emphasis}" />
+                        <TextBlock Text="{Binding Printer}" Style="{StaticResource Emphasis}" VerticalAlignment="Center" />
                     </StackPanel>
 
                     <Button Content="Test" HorizontalAlignment="Left" Click="TestButton_Click" IsEnabled="{Binding CanPrint}" Margin="100,2,0,20"  />
 
                     <StackPanel>
-                        <Label Content="Label Template" />
-                        <TextBox Text="{Binding LabelFile}"/>
+                        <Label Content="Label Template"/>
+                        <TextBlock Text="{Binding LabelFile}" Style="{StaticResource Emphasis}" VerticalAlignment="Center" />
                     </StackPanel>
                     
                     <Button Click="Button_Click" Content="Pick label" HorizontalAlignment="Left" Margin="100,2,0,20" DockPanel.Dock="Bottom"/>

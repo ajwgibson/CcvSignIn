@@ -170,7 +170,9 @@
     <Resource Include="Resources\search.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="vineyard.ico" />
+    <Content Include="vineyard.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

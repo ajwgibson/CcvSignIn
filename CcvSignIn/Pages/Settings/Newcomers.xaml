@@ -25,11 +25,11 @@
 
                     <StackPanel>
                         <Label Content="Next Id" />
-                        <TextBox Text="{Binding NextId, ValidatesOnDataErrors=True}" Width="100" />
+                        <TextBox Text="{Binding NextId, ValidatesOnDataErrors=True}" Width="50" />
                     </StackPanel>
 
                     <Button Content="Save settings" 
-                        Margin="100,16,0,0" HorizontalAlignment="Left" 
+                        Margin="100,20,0,0" HorizontalAlignment="Left" 
                         Click="SaveButton_Click" />
 
                 </StackPanel>

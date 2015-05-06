@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         xmlns:ccv="clr-namespace:CcvSignIn.Controls"
-        Title="CCV Sign In" IsTitleVisible="True"   
+        Title="CCV Sign In" IsTitleVisible="True"
         WindowStartupLocation="CenterScreen" Width="1000" Height="700"
         ContentSource="/Pages/Home.xaml">
 
@@ -23,4 +23,5 @@
     <mui:ModernWindow.TitleLinks>
         <mui:Link DisplayName="settings" Source="/Pages/SettingsPage.xaml" />
     </mui:ModernWindow.TitleLinks>
+    
 </mui:ModernWindow>

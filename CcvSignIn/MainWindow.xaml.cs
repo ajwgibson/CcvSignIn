@@ -26,8 +26,16 @@ namespace CcvSignIn
         public MainWindow()
         {
             InitializeComponent();
+
+            // Set window icon
+            Uri iconUri = new Uri("pack://application:,,,/vineyard.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
+
+            // Fix for date formats
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-GB");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-GB");
+
+            // Log4net configuration
             XmlConfigurator.Configure();
         }
     }
