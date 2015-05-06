@@ -29,9 +29,12 @@ namespace CcvSignIn.Pages.Settings
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            var context = ((NewcomersViewModel)DataContext);
+            ((NewcomersViewModel)DataContext).Save();
         }
 
-        
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((NewcomersViewModel)DataContext).Refresh();
+        }
     }
 }

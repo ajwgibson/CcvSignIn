@@ -8,21 +8,24 @@ namespace CcvSignIn.Pages.Settings
 {
     public class NewcomersViewModel : ViewModelBase
     {
-        int nextId = Properties.Settings.Default.NextNewcomerId;
+        private int nextId = Properties.Settings.Default.NextNewcomerId;
 
         public int NextId 
         {
             get { return nextId; }
-            set
-            {
-                if (nextId == value) return;
-                nextId = value;
+            set { nextId = value; }
+        }
 
-                Properties.Settings.Default.NextNewcomerId = nextId;
-                Properties.Settings.Default.Save();
+        public void Refresh()
+        {
+            NextId = Properties.Settings.Default.NextNewcomerId;
+            NotifyPropertyChanged("NextId");
+        }
 
-                NotifyPropertyChanged("NextId");
-            }
+        public void Save()
+        {
+            Properties.Settings.Default.NextNewcomerId = nextId;
+            Properties.Settings.Default.Save();
         }
     }
 }
