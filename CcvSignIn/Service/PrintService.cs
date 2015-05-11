@@ -17,7 +17,6 @@ namespace CcvSignIn.Service
 
         private PrintService() 
         {
-            // TODO Read these from settings
             Printer = Framework.GetLabelWriterPrinters().FirstOrDefault(p => p.IsConnected == true);
             Label = Framework.Open(@"Labels\VineyardStars.label");
             Copies = 3;
@@ -85,7 +84,16 @@ namespace CcvSignIn.Service
                 Label.SetObjectText("NAME", string.Format("{0} {1}", child.First, child.Last));
                 Label.SetObjectText("ENVIRONMENT", child.Room);
                 Label.SetObjectText("NUMBER", child.Id.ToString());
-                if (child.IsNewcomer) Label.SetObjectText("FLAGS", "** NEW **");
+
+                if (child.IsNewcomer)
+                {
+                    Label.SetObjectText("FLAGS", "** NEW **");
+                }
+                else
+                {
+                    Label.SetObjectText("FLAGS", String.Empty);
+                }
+                
                 Label.Print(Printer, new LabelWriterPrintParams() { Copies = copies });
             }
         }
