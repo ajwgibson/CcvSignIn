@@ -64,6 +64,9 @@ namespace CcvSignIn.Pages
             set
             {
                 if (filterValue == value) return;
+
+                SelectedChild = null;
+
                 filterValue = value;
                 NotifyPropertyChanged("FilterValue");
                 NotifyPropertyChanged("Children");
