@@ -35,14 +35,34 @@ namespace CcvSignIn.Pages
             { 
                 if (!string.IsNullOrEmpty(filterValue))
                 {
-                    return (
-                        from c in children
-                        where 
-                            c.First.ToLower().Contains(filterValue.ToLower())
-                            || c.Last.ToLower().Contains(filterValue.ToLower())
-                        orderby c.Last, c.First
-                        select c
-                    ).ToList<Child>();
+                    var filter = filterValue.Trim().ToLower();
+                    var parts = filter.Split(' ');
+                    if (parts.Length == 2)
+                    {
+                        // Special case - assume user typed first name and last name
+                        var first = parts[0];
+                        var last = parts[1];
+
+                        return (
+                            from c in children
+                            where
+                                c.First.ToLower().Contains(first)
+                                && c.Last.ToLower().Contains(last)
+                            orderby c.Last, c.First
+                            select c
+                        ).ToList<Child>();
+                    }
+                    else
+                    {
+                        return (
+                            from c in children
+                            where 
+                                c.First.ToLower().Contains(filter)
+                                || c.Last.ToLower().Contains(filter)
+                            orderby c.Last, c.First
+                            select c
+                        ).ToList<Child>();
+                    }
                 }
 
                 return children == null ? null : children.OrderBy(c => c.Last).ToList<Child>(); 
