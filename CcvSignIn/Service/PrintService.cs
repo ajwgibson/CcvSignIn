@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CcvSignIn.Service
@@ -74,6 +75,10 @@ namespace CcvSignIn.Service
         {
             if (PrintingAvailable)
             {
+                var regex = "(\\[.*\\])|(\".*\")|('.*')|(\\(.*\\))";
+                var first = Regex.Replace(child.First, regex, "").Trim();
+                var last  = Regex.Replace(child.Last, regex, "").Trim();
+
                 logger.DebugFormat(
                     "Printing {0} labels for {1} [{2}] using printer {3}",
                     Copies,
@@ -81,7 +86,7 @@ namespace CcvSignIn.Service
                     child.Id,
                     Printer.Name);
 
-                Label.SetObjectText("NAME", string.Format("{0} {1}", child.First, child.Last));
+                Label.SetObjectText("NAME", string.Format("{0}\r\n{1}", first, last));
                 Label.SetObjectText("ENVIRONMENT", child.Room);
                 Label.SetObjectText("NUMBER", child.Id.ToString());
 
