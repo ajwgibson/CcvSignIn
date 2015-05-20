@@ -170,6 +170,9 @@
     <Resource Include="Resources\search.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Labels\ccv-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Labels\vineyardstars-bw.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
