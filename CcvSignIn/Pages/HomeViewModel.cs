@@ -201,13 +201,13 @@ namespace CcvSignIn.Pages
         {
             Rooms = new Collection<Room>
                 {
-                    new Room { Title = "Tiny Stars",      Colour = "Pink",   Description = "9 months and over, not walking yet" },
-                    new Room { Title = "Little Stars",    Colour = "Lime",   Description = "Walking but not at nursery yet" },
-                    new Room { Title = "Small Stars",     Colour = "Blue",   Description = "Nursery & P1" },
-                    new Room { Title = "Allstars Junior", Colour = "Green",  Description = "P2 & P3" },
-                    new Room { Title = "Allstars",        Colour = "Orange", Description = "P3 & P4" },
-                    new Room { Title = "Allstars High",   Colour = "Purple", Description = "P5, P6 & P7" },
-                    new Room { Title = "Kids Serving",    Colour = "Any",    Description = "Kids under the age of 11 who are serving" },
+                    new Room { Title = "Tiny Stars",       Colour = "Pink",   Description = "10 months to 2 years and crawling" },
+                    new Room { Title = "Little Stars",     Colour = "Lime",   Description = "Under 2 and walking" },
+                    new Room { Title = "Small Stars",      Colour = "Green",  Description = "Aged 2 and over but not yet in nursery" },
+                    new Room { Title = "Allstars Juniors", Colour = "Blue",   Description = "Nursery and primary 1" },
+                    new Room { Title = "Allstars",         Colour = "Orange", Description = "Primary 2, 3 and 4" },
+                    new Room { Title = "Allstars High",    Colour = "Purple", Description = "Primary 5, 6 and 7" },
+                    new Room { Title = "Kids Serving",     Colour = "Any",    Description = "Kids under the age of 11 who are serving" },
                 };
         }
 
