@@ -34,6 +34,14 @@
     <ApplicationIcon>vineyard.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DYMO.Common, Version=8.5.1.1816, Culture=neutral, PublicKeyToken=5426002a38745af9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DYMO\DYMO.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DYMO.DLS.Runtime, Version=8.5.1.1816, Culture=neutral, PublicKeyToken=5426002a38745af9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DYMO\DYMO.DLS.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="DYMO.Label.Framework">
       <HintPath>..\packages\DYMO\DYMO.Label.Framework.dll</HintPath>
     </Reference>
@@ -75,6 +83,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\SearchTextBox.cs" />
+    <Compile Include="Converters\BooleanToStringConverter.cs" />
     <Compile Include="Pages\Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>

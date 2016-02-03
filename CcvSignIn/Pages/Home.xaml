@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:ccv="clr-namespace:CcvSignIn.Controls"
+             xmlns:ccvconvert="clr-namespace:CcvSignIn.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
+    <UserControl.Resources>
+        <ccvconvert:BooleanToStringConverter x:Key="BooleanToStringConverter"/>
+    </UserControl.Resources>
+
     <Grid Style="{StaticResource ContentRoot}">
         
         <Grid.ColumnDefinitions>
@@ -53,6 +58,7 @@
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}"/>
                     <DataGridTextColumn Header="Time" Binding="{Binding SignedInAt, StringFormat=g}"/>
+                    <DataGridTextColumn Header="Update required?" Binding="{Binding UpdateRequired, Converter={StaticResource BooleanToStringConverter}}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
@@ -116,6 +122,13 @@
                     Margin="100,16,0,0" HorizontalAlignment="Left" 
                     IsEnabled="{Binding SignInEnabled}" 
                     Click="SignInButton_Click" />
+
+                <TextBlock Visibility="{Binding UpdateContactDetailsVisibility}"
+                    Text="Updated contact details are required for this child." 
+                           Style="{StaticResource Heading2}" 
+                           Margin="0,20,0,8" 
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap" />
 
             </StackPanel>
 

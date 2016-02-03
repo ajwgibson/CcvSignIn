@@ -114,6 +114,7 @@ namespace CcvSignIn.Pages
 
                 NotifyPropertyChanged("SelectedChild");
                 NotifyPropertyChanged("SelectedChildVisibility");
+                NotifyPropertyChanged("UpdateContactDetailsVisibility");
             } 
         }
 
@@ -190,6 +191,18 @@ namespace CcvSignIn.Pages
                 if (dataFilename == value) return;
                 dataFilename = value;
                 NotifyPropertyChanged("DataFilename");
+            }
+        }
+
+        /// <summary>
+        /// Gets the visibility of the update contact details warning.
+        /// </summary>
+        public Visibility UpdateContactDetailsVisibility
+        {
+            get
+            {
+                if (selectedChild != null && selectedChild.UpdateRequired) return Visibility.Visible;
+                return Visibility.Collapsed;
             }
         }
 

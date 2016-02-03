@@ -27,6 +27,9 @@ namespace CcvSignIn.Model
         [CsvColumn]
         public bool IsNewcomer { get; set; }
 
+        [CsvColumn]
+        public bool UpdateRequired { get; set; }
+
         public string Fullname 
         {
             get { return string.Format("{0} {1}", First, Last); }
