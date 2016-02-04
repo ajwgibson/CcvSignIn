@@ -187,6 +187,7 @@
     <Content Include="Labels\vineyardstars-bw.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\warning.png" />
     <Content Include="vineyard.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

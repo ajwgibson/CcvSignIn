@@ -58,7 +58,6 @@
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}"/>
                     <DataGridTextColumn Header="Time" Binding="{Binding SignedInAt, StringFormat=g}"/>
-                    <DataGridTextColumn Header="Update required?" Binding="{Binding UpdateRequired, Converter={StaticResource BooleanToStringConverter}}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
@@ -123,12 +122,13 @@
                     IsEnabled="{Binding SignInEnabled}" 
                     Click="SignInButton_Click" />
 
-                <TextBlock Visibility="{Binding UpdateContactDetailsVisibility}"
-                    Text="Updated contact details are required for this child." 
+                <StackPanel Visibility="{Binding UpdateContactDetailsVisibility}" Margin="0,20,0,8">
+                    <Image Source="pack://application:,,,/CcvSignIn;component/Resources/warning.png" Width="24" Margin="60,0,15,0" />
+                    <TextBlock Text="Please update contact details!" 
                            Style="{StaticResource Heading2}" 
-                           Margin="0,20,0,8" 
                            VerticalAlignment="Center"
-                           TextWrapping="Wrap" />
+                           TextWrapping="Wrap"/>
+                </StackPanel>
 
             </StackPanel>
 
