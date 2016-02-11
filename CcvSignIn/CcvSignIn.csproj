@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Controls\SearchTextBox.cs" />
     <Compile Include="Converters\BooleanToStringConverter.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Pages\Settings\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>

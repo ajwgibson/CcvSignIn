@@ -30,9 +30,17 @@ namespace CcvSignIn.Model
         [CsvColumn]
         public bool UpdateRequired { get; set; }
 
+
+
+        #region Properties not saved to or loaded from CSV
+
         public string Fullname 
         {
             get { return string.Format("{0} {1}", First, Last); }
         }
+
+        public string RoomLabel { get; set; }
+
+        #endregion
     }
 }

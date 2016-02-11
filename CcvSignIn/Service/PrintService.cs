@@ -1,4 +1,5 @@
-﻿using CcvSignIn.Model;
+﻿using CcvSignIn.Extensions;
+using CcvSignIn.Model;
 using DYMO.Label.Framework;
 using log4net;
 using System;
@@ -35,6 +36,7 @@ namespace CcvSignIn.Service
         public IPrinter Printer { get; private set; }
         public ILabel Label { get; private set; }
         public int Copies { get; private set; }
+        public bool PrintForSunday { get; private set; }
 
         public static List<IPrinter> Printers
         {
@@ -47,13 +49,14 @@ namespace CcvSignIn.Service
             }
         }
 
-        public void Configure(string printer, string labelFile, int copies)
+        public void Configure(string printer, string labelFile, int copies, bool printForSunday)
         {
             logger.DebugFormat("Configure: Printer={0}, Copies={1}, Label={2}", printer, copies, labelFile);
 
             Printer = Printers.FirstOrDefault(p => p.Name == printer);
             Label = Framework.Open(labelFile);
             Copies = copies;
+            PrintForSunday = printForSunday;
         }
 
         public bool PrintingAvailable 
@@ -87,8 +90,13 @@ namespace CcvSignIn.Service
                     Printer.Name);
 
                 Label.SetObjectText("NAME", string.Format("{0}\r\n{1}", first, last));
-                Label.SetObjectText("ENVIRONMENT", child.Room);
+                Label.SetObjectText("ENVIRONMENT", child.RoomLabel);
                 Label.SetObjectText("NUMBER", child.Id.ToString());
+
+                var signedInAt = child.SignedInAt.HasValue ? child.SignedInAt.Value : DateTime.Now;
+                if (PrintForSunday && !(signedInAt.DayOfWeek == DayOfWeek.Sunday)) signedInAt = signedInAt.Next(DayOfWeek.Sunday);
+
+                Label.SetObjectText("DATE", signedInAt.ToString("d MMMM yyyy"));
 
                 if (child.IsNewcomer)
                 {
@@ -102,6 +110,6 @@ namespace CcvSignIn.Service
                 Label.Print(Printer, new LabelWriterPrintParams() { Copies = copies });
             }
         }
-        
+
     }
 }

@@ -14,6 +14,7 @@ namespace CcvSignIn.Model
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsAvailable { get; set; }
+        public bool ShowOnLabel { get; set; }
 
         [XmlIgnore]
         public bool IsSelected { get; set; }

@@ -42,6 +42,11 @@
                         <TextBox Text="{Binding Copies, ValidatesOnDataErrors=True}" Width="30" />
                     </StackPanel>
 
+                    <StackPanel Margin="0,20,0,0">
+                        <Label Content="Print for Sunday" />
+                        <CheckBox IsChecked="{Binding PrintSundayDate}" />
+                    </StackPanel>
+
                     <Button Content="Save settings" Margin="100,20,0,0" HorizontalAlignment="Left" Click="SaveButton_Click" />
 
                 </StackPanel>

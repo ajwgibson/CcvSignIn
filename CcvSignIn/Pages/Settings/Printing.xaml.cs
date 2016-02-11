@@ -31,7 +31,7 @@ namespace CcvSignIn.Pages.Settings
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             var context = ((PrintingViewModel)DataContext);
-            PrintService.Instance.Configure(context.Printer, context.LabelFile, context.Copies);
+            PrintService.Instance.Configure(context.Printer, context.LabelFile, context.Copies, context.PrintSundayDate);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -54,7 +54,7 @@ namespace CcvSignIn.Pages.Settings
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            PrintService.Instance.Print(new Child { First = "Test", Last = "Person", Room = "A room", IsNewcomer = true }, 1);
+            PrintService.Instance.Print(new Child { First = "Test", Last = "Person", RoomLabel = "A room", IsNewcomer = true }, 1);
         }
     }
 }

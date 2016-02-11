@@ -1,4 +1,5 @@
-﻿using CcvSignIn.Model;
+﻿using CcvSignIn.Extensions;
+using CcvSignIn.Model;
 using CcvSignIn.Service;
 using log4net;
 using System;
@@ -252,6 +253,7 @@ namespace CcvSignIn.Pages
                         SelectedRoom.Title);
 
                     selectedChild.Room = SelectedRoom.Title;
+                    selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
                     selectedChild.SignedInAt = DateTime.Now;
 
                     printService.Print(selectedChild);
@@ -267,6 +269,7 @@ namespace CcvSignIn.Pages
                         SelectedChild.Room);
 
                     selectedChild.Room = null;
+                    selectedChild.RoomLabel = null;
                     selectedChild.SignedInAt = null;
                     selectedRoom = null;
                 }
@@ -282,6 +285,7 @@ namespace CcvSignIn.Pages
                         SelectedRoom.Title);
 
                     selectedChild.Room = SelectedRoom.Title;
+                    selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
                     selectedChild.SignedInAt = DateTime.Now;
 
                     printService.Print(selectedChild);

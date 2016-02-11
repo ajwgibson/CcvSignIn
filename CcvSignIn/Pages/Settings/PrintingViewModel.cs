@@ -42,6 +42,8 @@ namespace CcvSignIn.Pages.Settings
             get { return !(PrintService.Printers == null || PrintService.Printers.Count == 0); }
         }
 
+        public bool PrintSundayDate { get; set; }
+
         #endregion
 
         #region Constructors
@@ -53,6 +55,7 @@ namespace CcvSignIn.Pages.Settings
             var printers = PrintService.Printers;
             if (printers != null && printers.Count > 0) Printer = printers[0].Name;
             else Printer = "No active Dymo LabelPrinter found";
+            PrintSundayDate = false;
         }
 
         #endregion
