@@ -4,8 +4,11 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace CcvSignIn.Pages
 {
@@ -132,9 +135,17 @@ namespace CcvSignIn.Pages
         }
 
         /// <summary>
-        /// Gets the list of available rooms.
+        /// Gets the full list of rooms.
         /// </summary>
         public Collection<Room> Rooms { get; private set; }
+
+        /// <summary>
+        /// Gets the list of available rooms.
+        /// </summary>
+        public List<Room> AvailableRooms
+        {
+            get { return Rooms.Where(r => r.IsAvailable).ToList(); }
+        }
 
         /// <summary>
         /// Gets the selected room.
@@ -212,16 +223,13 @@ namespace CcvSignIn.Pages
 
         public HomeViewModel()
         {
-            Rooms = new Collection<Room>
-                {
-                    new Room { Title = "Tiny Stars",       Colour = "Pink",   Description = "10 months to 2 years and crawling" },
-                    new Room { Title = "Little Stars",     Colour = "Lime",   Description = "Under 2 and walking" },
-                    new Room { Title = "Small Stars",      Colour = "Green",  Description = "Aged 2 and over but not yet in nursery" },
-                    new Room { Title = "Allstars Juniors", Colour = "Blue",   Description = "Nursery and primary 1" },
-                    new Room { Title = "Allstars",         Colour = "Orange", Description = "Primary 2, 3 and 4" },
-                    new Room { Title = "Allstars High",    Colour = "Purple", Description = "Primary 5, 6 and 7" },
-                    new Room { Title = "Kids Serving",     Colour = "Any",    Description = "Kids under the age of 11 who are serving" },
-                };
+            Rooms = new Collection<Room>();
+            XmlSerializer xs = new XmlSerializer(typeof(Collection<Room>));
+            using (var reader = new StreamReader(@"Rooms.xml"))
+            {
+                var rooms = (Collection<Room>)xs.Deserialize(reader);
+                foreach (var room in rooms) Rooms.Add(room);
+            }
         }
 
         #endregion

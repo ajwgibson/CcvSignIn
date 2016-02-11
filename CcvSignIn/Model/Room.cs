@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace CcvSignIn.Model
 {
@@ -12,8 +13,12 @@ namespace CcvSignIn.Model
         public string Colour { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public bool IsAvailable { get; set; }
+
+        [XmlIgnore]
         public bool IsSelected { get; set; }
 
+        [XmlIgnore]
         public string DisplayName 
         { 
             get 

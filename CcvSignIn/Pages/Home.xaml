@@ -104,7 +104,7 @@
 
                 <StackPanel>
                     <Label Content="Environment" VerticalAlignment="Top"/>
-                    <ListBox ItemsSource="{Binding Rooms}"
+                    <ListBox ItemsSource="{Binding AvailableRooms}"
                             SelectedItem="{Binding SelectedRoom}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
