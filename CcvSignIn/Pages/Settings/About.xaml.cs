@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,13 @@ namespace CcvSignIn.Pages
     /// </summary>
     public partial class Help : UserControl
     {
+        public string Version { get; set; }
+
         public Help()
         {
             InitializeComponent();
+            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            DataContext = this;
         }
     }
 }
