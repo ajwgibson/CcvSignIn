@@ -1,5 +1,4 @@
-﻿using CcvSignIn.Extensions;
-using CcvSignIn.Model;
+﻿using CcvSignIn.Model;
 using CcvSignIn.Service;
 using log4net;
 using System;
@@ -246,15 +245,23 @@ namespace CcvSignIn.Pages
                 {
                     // Normal sign in
 
+                    var id = Properties.Settings.Default.NextId;
+                    var laptopLabel = Properties.Settings.Default.LaptopLabel;
+                    var label = string.Format("{0}{1:D2}", laptopLabel, id);
+
+                    Properties.Settings.Default.NextId += 1;
+                    Properties.Settings.Default.Save();
+
                     logger.InfoFormat(
-                        "Signed in {0} ({1}) to {2}",
+                        "Signed in {0} to {1} with label {2}",
                         selectedChild.Fullname,
-                        selectedChild.Id,
-                        SelectedRoom.Title);
+                        SelectedRoom.Title,
+                        label);
 
                     selectedChild.Room = SelectedRoom.Title;
                     selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
                     selectedChild.SignedInAt = DateTime.Now;
+                    selectedChild.Label = label;
 
                     printService.Print(selectedChild);
                 }
@@ -265,12 +272,13 @@ namespace CcvSignIn.Pages
                     logger.InfoFormat(
                         "Cleared details for {0} ({1}), was signed into {2}",
                         selectedChild.Fullname,
-                        selectedChild.Id,
+                        selectedChild.Label,
                         SelectedChild.Room);
 
                     selectedChild.Room = null;
                     selectedChild.RoomLabel = null;
                     selectedChild.SignedInAt = null;
+                    selectedChild.Label = null;
                     selectedRoom = null;
                 }
                 else if (selectedRoom.Title != SelectedChild.Room)
@@ -280,7 +288,7 @@ namespace CcvSignIn.Pages
                     logger.InfoFormat(
                         "Changed sign in details for {0} ({1}) from {2} to {3}",
                         selectedChild.Fullname,
-                        selectedChild.Id,
+                        selectedChild.Label,
                         SelectedChild.Room,
                         SelectedRoom.Title);
 
@@ -305,11 +313,8 @@ namespace CcvSignIn.Pages
         /// </summary>
         public void AddNewcomer(string first, string last)
         {
-            var id = Properties.Settings.Default.NextNewcomerId;
-
             children.Add(new Child
                 {
-                    Id = id,
                     First = first,
                     Last = last,
                     IsNewcomer = true,
@@ -317,13 +322,10 @@ namespace CcvSignIn.Pages
 
             new CsvService().SaveData(DataFilename, children);
 
-            Properties.Settings.Default.NextNewcomerId += 1;
-            Properties.Settings.Default.Save();
-
             if (FilterValue == last) NotifyPropertyChanged("Children");
             else FilterValue = last;
 
-            SelectedChild = children.FirstOrDefault(c => c.Id == id);
+            SelectedChild = children.FirstOrDefault(c => c.First == first && c.Last == last && c.IsNewcomer);
         }
     }
 }

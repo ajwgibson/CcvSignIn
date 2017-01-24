@@ -55,7 +55,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="First name" Binding="{Binding First}"/>
                     <DataGridTextColumn Header="Last name" Binding="{Binding Last}" />
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Label" Binding="{Binding Label}"/>
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}"/>
                     <DataGridTextColumn Header="Time" Binding="{Binding SignedInAt, StringFormat=g}"/>
                 </DataGrid.Columns>

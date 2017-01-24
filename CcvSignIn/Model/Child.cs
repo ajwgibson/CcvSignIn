@@ -1,9 +1,5 @@
 ﻿using LINQtoCSV;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CcvSignIn.Model
 {
@@ -23,6 +19,9 @@ namespace CcvSignIn.Model
 
         [CsvColumn]
         public DateTime? SignedInAt { get; set; }
+
+        [CsvColumn]
+        public string Label { get; set; }
 
         [CsvColumn]
         public bool IsNewcomer { get; set; }
