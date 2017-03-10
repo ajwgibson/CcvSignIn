@@ -82,7 +82,9 @@ namespace CcvSignIn.Pages
                 children = value;
                 NotifyPropertyChanged("Children");
                 NotifyPropertyChanged("NewcomerButtonEnabled");
-            } 
+
+                SelectedChild = null;
+            }
         }
 
         /// <summary>
@@ -368,6 +370,8 @@ namespace CcvSignIn.Pages
             new CsvService().SaveData(DataFilename, children);
 
             NotifyPropertyChanged("Children");
+
+            SelectedChild = null;
         }
     }
 }

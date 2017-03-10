@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstFloor.ModernUI.Windows.Controls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -64,12 +65,14 @@ namespace CcvSignIn.Pages.Settings
 
         private void ClearAllDataButton_Click(object sender, RoutedEventArgs e)
         {
-            HomeViewModel.Instance.ClearChildren();
+            var result = ModernDialog.ShowMessage("Are you sure you want to clear all the data?", "Warning", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) HomeViewModel.Instance.ClearChildren();
         }
 
         private void ClearSignInDataButton_Click(object sender, RoutedEventArgs e)
         {
-            HomeViewModel.Instance.ClearSignIns();
+            var result = ModernDialog.ShowMessage("Are you sure you want to clear the sign in data?", "Warning", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) HomeViewModel.Instance.ClearSignIns();
         }
     }
 }
