@@ -18,6 +18,8 @@ namespace CcvSignIn.Pages
 
         #region Fields
 
+        private static HomeViewModel _instance = new HomeViewModel();   // Singleton (don't judge me!)
+
         private string filterValue;
         private List<Child> children;
         private Child selectedChild;
@@ -28,6 +30,11 @@ namespace CcvSignIn.Pages
         #endregion
 
         #region Properties
+
+        public static HomeViewModel Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Gets or sets the list of children to display.
@@ -120,7 +127,6 @@ namespace CcvSignIn.Pages
                 NotifyPropertyChanged("UpdateContactDetailsVisibility");
             } 
         }
-
         
         /// <summary>
         /// Gets the visibility of the selected child.
@@ -194,6 +200,9 @@ namespace CcvSignIn.Pages
             get { return children != null && children.Count > 0; }
         }
 
+        /// <summary>
+        /// Gets the path to the data file currently in use.
+        /// </summary>
         public string DataFilename
         {
             get { return dataFilename; }
@@ -217,12 +226,18 @@ namespace CcvSignIn.Pages
             }
         }
 
+        /// <summary>
+        /// Gets a flag to indicate whether data should be synchronised to the server
+        /// </summary>
+        public Boolean SyncServer { get; set; }
+
         #endregion
 
         #region Constructor
 
-        public HomeViewModel()
+        private HomeViewModel()
         {
+            SyncServer = true;
             Rooms = new Collection<Room>();
             XmlSerializer xs = new XmlSerializer(typeof(Collection<Room>));
             using (var reader = new StreamReader(@"Rooms.xml"))
@@ -326,6 +341,33 @@ namespace CcvSignIn.Pages
             else FilterValue = last;
 
             SelectedChild = children.FirstOrDefault(c => c.First == first && c.Last == last && c.IsNewcomer);
+        }
+
+        /// <summary>
+        /// Clears down the list of children.
+        /// </summary>
+        public void ClearChildren()
+        {
+            Children = new List<Child>();
+            new CsvService().SaveData(DataFilename, children);
+        }
+
+        /// <summary>
+        /// Clears down the sign ins but leaves the children.
+        /// </summary>
+        public void ClearSignIns()
+        {
+            foreach (var child in children.Where(c => c.SignedInAt != null))
+            {
+                child.Room = null;
+                child.RoomLabel = null;
+                child.SignedInAt = null;
+                child.Label = null;
+            }
+
+            new CsvService().SaveData(DataFilename, children);
+
+            NotifyPropertyChanged("Children");
         }
     }
 }

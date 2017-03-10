@@ -112,6 +112,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\SearchTextBox.cs" />
+    <Compile Include="Converters\BooleanInverterConverter.cs" />
     <Compile Include="Converters\BooleanToStringConverter.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Pages\Settings\About.xaml.cs">
@@ -125,6 +126,10 @@
       <DependentUpon>NewcomerDialogue.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\NewcomerDialogueViewModel.cs" />
+    <Compile Include="Pages\Settings\Data.xaml.cs">
+      <DependentUpon>Data.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Settings\DataViewModel.cs" />
     <Compile Include="Pages\Settings\GeneralViewModel.cs" />
     <Compile Include="Pages\Settings\General.xaml.cs">
       <DependentUpon>General.xaml</DependentUpon>
@@ -179,6 +184,10 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="Pages\Settings\Data.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\Settings\General.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

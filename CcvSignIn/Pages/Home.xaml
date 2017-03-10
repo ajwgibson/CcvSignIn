@@ -138,11 +138,9 @@
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             
             <TextBlock Text="{Binding DataFilename}" Style="{StaticResource Small}" Grid.Column="0" VerticalAlignment="Center"/>
-            <Button Content="Load data" HorizontalAlignment="Right" Grid.Column="1" Click="LoadDataButton_Click" />
             
         </Grid>
 
