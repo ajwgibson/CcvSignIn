@@ -58,5 +58,15 @@ namespace CcvSignIn.Properties {
                 this["ApiBaseUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|DataDirectory|\\db\\CcvSignIn.sqlite")]
+        public string DatabaseContext {
+            get {
+                return ((string)(this["DatabaseContext"]));
+            }
+        }
     }
 }
