@@ -9,8 +9,6 @@ namespace CcvSignIn.Pages.Settings
 {
     public class DataViewModel : ViewModelBase
     {
-        private Boolean syncServer = true;
-
         public string DataFilename
         {
             get { return HomeViewModel.Instance.DataFilename; }

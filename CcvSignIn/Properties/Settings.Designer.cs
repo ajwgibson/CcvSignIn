@@ -49,7 +49,7 @@ namespace CcvSignIn.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ccvstars.grumpygibson.com/api")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ccvstars.grumpygibson.com/api/")]
         public string ApiBaseUrl {
             get {
                 return ((string)(this["ApiBaseUrl"]));

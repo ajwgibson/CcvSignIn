@@ -46,7 +46,7 @@
                         <Button Content="New file..."            Width="200" Margin="0,0,0,8" Click="NewFileButton_Click" />
                         <Button Content="Clear all data"         Width="200" Margin="0,0,0,8" Click="ClearAllDataButton_Click" Visibility="{Binding FileIsOpen}" />
                         <Button Content="Clear sign-in data"     Width="200" Margin="0,0,0,8" Click="ClearSignInDataButton_Click" Visibility="{Binding FileIsOpen}" />
-                        <Button Content="Fetch data from server" Width="200" Margin="0,0,0,8" Visibility="{Binding FileIsOpen}" />
+                        <Button Content="Fetch data from server" Width="200" Margin="0,0,0,8" Click="FetchServerDataButton_Click" Visibility="{Binding FileIsOpen}" />
                     </StackPanel>
 
                 </StackPanel>

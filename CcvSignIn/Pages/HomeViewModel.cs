@@ -373,5 +373,10 @@ namespace CcvSignIn.Pages
 
             SelectedChild = null;
         }
+
+        public void SaveFile()
+        {
+            new CsvService().SaveData(DataFilename, children);
+        }
     }
 }

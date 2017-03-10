@@ -1,5 +1,7 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
+﻿using CcvSignIn.Service;
+using FirstFloor.ModernUI.Windows.Controls;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -73,6 +75,26 @@ namespace CcvSignIn.Pages.Settings
         {
             var result = ModernDialog.ShowMessage("Are you sure you want to clear the sign in data?", "Warning", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes) HomeViewModel.Instance.ClearSignIns();
+        }
+
+        private async void FetchServerDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new ServerLogin { Title = "Login to server" };
+
+            dlg.ShowDialog();
+
+            var doLogin = dlg.DialogResult.HasValue ? (bool)dlg.DialogResult : false;
+            var loginviewModel = (ServerLoginViewModel)dlg.DataContext;
+
+            if (doLogin
+                && !string.IsNullOrEmpty(loginviewModel.Username)
+                && !string.IsNullOrEmpty(loginviewModel.ThePassword))
+            {
+                await ApiService.Login(loginviewModel.Username, loginviewModel.ThePassword);
+                var result = await ApiService.DownloadChildren();
+                HomeViewModel.Instance.Children = result;
+                HomeViewModel.Instance.SaveFile();
+            }
         }
     }
 }
