@@ -46,17 +46,5 @@ namespace CcvSignIn.Properties {
                 this["LaptopLabel"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ccvstars.grumpygibson.com/api")]
-        public string ApiBaseUrl {
-            get {
-                return ((string)(this["ApiBaseUrl"]));
-            }
-            set {
-                this["ApiBaseUrl"] = value;
-            }
-        }
     }
 }

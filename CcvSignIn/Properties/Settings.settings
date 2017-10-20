@@ -8,8 +8,5 @@
     <Setting Name="LaptopLabel" Type="System.String" Scope="User">
       <Value Profile="(Default)">A</Value>
     </Setting>
-    <Setting Name="ApiBaseUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://ccvstars.grumpygibson.com/api</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

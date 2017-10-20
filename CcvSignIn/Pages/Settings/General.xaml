@@ -33,11 +33,6 @@
                         <TextBox Text="{Binding NextId, ValidatesOnDataErrors=True}" Width="50" />
                     </StackPanel>
 
-                    <StackPanel>
-                        <Label Content="API base url" />
-                        <TextBox Text="{Binding ApiBaseUrl, ValidatesOnDataErrors=True}" Width="500" />
-                    </StackPanel>
-
                     <StackPanel Margin="100,20,0,0">
                         <Button Content="Save settings"   HorizontalAlignment="Left" Click="SaveButton_Click" />
                         <Button Content="Reload settings" HorizontalAlignment="Left" Click="RefreshButton_Click" Margin="10,0,0,0" />
