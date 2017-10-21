@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace CcvSignIn.Pages
@@ -115,13 +114,10 @@ namespace CcvSignIn.Pages
                     SelectedRoom = Rooms.FirstOrDefault(r => r.Title == selectedChild.Room);
                 }
 
-                NotifyPropertyChanged("SelectedChild");
-                NotifyPropertyChanged("SelectedChildVisibility");
-                NotifyPropertyChanged("UpdateContactDetailsVisibility");
+                NotifyChanges();
             } 
         }
 
-        
         /// <summary>
         /// Gets the visibility of the selected child.
         /// </summary>
@@ -157,24 +153,7 @@ namespace CcvSignIn.Pages
             {
                 if (selectedRoom == value) return;
                 selectedRoom = value;
-                NotifyPropertyChanged("SelectedRoom");
-                NotifyPropertyChanged("SignInEnabled");
-                NotifyPropertyChanged("SignInButtonText");
-                
-            }
-        }
-        
-        /// <summary>
-        /// Gets the text that should be displayed on the sign in button.
-        /// </summary>
-        public string SignInButtonText 
-        {
-            get
-            {
-                if (selectedChild != null && string.IsNullOrEmpty(selectedChild.Room)) return "Sign in";
-                if (selectedRoom != null && selectedRoom.Title == SelectedChild.Room) return "Clear";
-                if (selectedRoom != null && selectedRoom.Title != SelectedChild.Room) return "Change";
-                return "Sign in";
+                NotifyChanges();
             }
         }
 
@@ -187,6 +166,57 @@ namespace CcvSignIn.Pages
         }
 
         /// <summary>
+        /// Is the sign in button visible?
+        /// </summary>
+        public Visibility SignInButtonVisibility
+        {
+            get
+            {
+                if (SelectedRoom == null) return Visibility.Visible;
+                if (SelectedRoom != null && SelectedChild != null && SelectedChild.Room == null) return Visibility.Visible;
+
+                return Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// Is the clear button visible?
+        /// </summary>
+        public Visibility ClearButtonVisibility
+        {
+            get
+            {
+                if (SelectedChild != null
+                        && SelectedRoom != null
+                        && SelectedRoom.Title == SelectedChild.Room)
+                {
+                    return Visibility.Visible;
+                }
+
+                return Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// Is the change button visible?
+        /// </summary>
+        public Visibility ChangeButtonVisibility
+        {
+            get
+            {
+                if (SelectedChild != null
+                        && SelectedRoom != null
+                        && SelectedChild.Room != null
+                        && (SelectedRoom.Title != SelectedChild.Room))
+                {
+                    return Visibility.Visible;
+                }
+
+                return Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
         /// Gets a flag to indicate if the newcomer button should be enabled.
         /// </summary>
         public bool NewcomerButtonEnabled
@@ -194,6 +224,9 @@ namespace CcvSignIn.Pages
             get { return children != null && children.Count > 0; }
         }
 
+        /// <summary>
+        /// Gets or sets the data file name
+        /// </summary>
         public string DataFilename
         {
             get { return dataFilename; }
@@ -234,78 +267,78 @@ namespace CcvSignIn.Pages
 
         #endregion
 
+        #region Public methods
+
         /// <summary>
-        /// Perform a sign in action.
+        /// Normal sign in.
         /// </summary>
         public void SignIn()
         {
-            if (selectedChild != null && SelectedRoom != null)
-            {
-                if (string.IsNullOrEmpty(SelectedChild.Room)) 
-                {
-                    // Normal sign in
+            var id = Properties.Settings.Default.NextId;
+            var laptopLabel = Properties.Settings.Default.LaptopLabel;
+            var label = string.Format("{0}{1:D2}", laptopLabel, id);
 
-                    var id = Properties.Settings.Default.NextId;
-                    var laptopLabel = Properties.Settings.Default.LaptopLabel;
-                    var label = string.Format("{0}{1:D2}", laptopLabel, id);
+            Properties.Settings.Default.NextId += 1;
+            Properties.Settings.Default.Save();
 
-                    Properties.Settings.Default.NextId += 1;
-                    Properties.Settings.Default.Save();
+            logger.InfoFormat(
+                "Signed in {0} to {1} with label {2}",
+                selectedChild.Fullname,
+                SelectedRoom.Title,
+                label);
 
-                    logger.InfoFormat(
-                        "Signed in {0} to {1} with label {2}",
-                        selectedChild.Fullname,
-                        SelectedRoom.Title,
-                        label);
+            selectedChild.Room = SelectedRoom.Title;
+            selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
+            selectedChild.SignedInAt = DateTime.Now;
+            selectedChild.Label = label;
 
-                    selectedChild.Room = SelectedRoom.Title;
-                    selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
-                    selectedChild.SignedInAt = DateTime.Now;
-                    selectedChild.Label = label;
+            printService.Print(selectedChild);
 
-                    printService.Print(selectedChild);
-                }
-                else if (selectedRoom.Title == SelectedChild.Room)
-                {
-                    // Clear details
+            SaveChanges();
+            NotifyChanges();
+        }
 
-                    logger.InfoFormat(
-                        "Cleared details for {0} ({1}), was signed into {2}",
-                        selectedChild.Fullname,
-                        selectedChild.Label,
-                        SelectedChild.Room);
+        /// <summary>
+        /// Change a sign in record
+        /// </summary>
+        public void ChangeSignIn()
+        {
+            logger.InfoFormat(
+                "Changed sign in details for {0} ({1}) from {2} to {3}",
+                selectedChild.Fullname,
+                selectedChild.Label,
+                SelectedChild.Room,
+                SelectedRoom.Title);
 
-                    selectedChild.Room = null;
-                    selectedChild.RoomLabel = null;
-                    selectedChild.SignedInAt = null;
-                    selectedChild.Label = null;
-                    selectedRoom = null;
-                }
-                else if (selectedRoom.Title != SelectedChild.Room)
-                {
-                    // Change sign in room
+            selectedChild.Room = SelectedRoom.Title;
+            selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
+            selectedChild.SignedInAt = DateTime.Now;
 
-                    logger.InfoFormat(
-                        "Changed sign in details for {0} ({1}) from {2} to {3}",
-                        selectedChild.Fullname,
-                        selectedChild.Label,
-                        SelectedChild.Room,
-                        SelectedRoom.Title);
+            printService.Print(selectedChild);
 
-                    selectedChild.Room = SelectedRoom.Title;
-                    selectedChild.RoomLabel = SelectedRoom.ShowOnLabel ? SelectedRoom.Title : "";
-                    selectedChild.SignedInAt = DateTime.Now;
+            SaveChanges();
+            NotifyChanges();
+        }
 
-                    printService.Print(selectedChild);
-                }
+        /// <summary>
+        /// Clear a sign in record
+        /// </summary>
+        public void ClearSignIn()
+        {
+            logger.InfoFormat(
+                "Cleared details for {0} ({1}), was signed into {2}",
+                selectedChild.Fullname,
+                selectedChild.Label,
+                SelectedChild.Room);
 
-                new CsvService().SaveData(DataFilename, children);
+            selectedChild.Room = null;
+            selectedChild.RoomLabel = null;
+            selectedChild.SignedInAt = null;
+            selectedChild.Label = null;
+            selectedRoom = null;
 
-                NotifyPropertyChanged("SelectedRoom");
-                NotifyPropertyChanged("SignInEnabled");
-                NotifyPropertyChanged("SignInButtonText");
-                NotifyPropertyChanged("Children");
-            }
+            SaveChanges();
+            NotifyChanges();
         }
 
         /// <summary>
@@ -327,5 +360,29 @@ namespace CcvSignIn.Pages
 
             SelectedChild = children.FirstOrDefault(c => c.First == first && c.Last == last && c.IsNewcomer);
         }
+
+        #endregion
+
+        #region Private methods
+
+        private void SaveChanges()
+        {
+            new CsvService().SaveData(DataFilename, children);
+        }
+
+        private void NotifyChanges()
+        {
+            NotifyPropertyChanged("SelectedChild");
+            NotifyPropertyChanged("SelectedChildVisibility");
+            NotifyPropertyChanged("UpdateContactDetailsVisibility");
+            NotifyPropertyChanged("SelectedRoom");
+            NotifyPropertyChanged("SignInEnabled");
+            NotifyPropertyChanged("SignInButtonVisibility");
+            NotifyPropertyChanged("ClearButtonVisibility");
+            NotifyPropertyChanged("ChangeButtonVisibility");
+            NotifyPropertyChanged("Children");
+        }
+
+        #endregion
     }
 }

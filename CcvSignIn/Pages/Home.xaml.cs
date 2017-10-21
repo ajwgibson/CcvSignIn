@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstFloor.ModernUI.Windows.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,11 +25,6 @@ namespace CcvSignIn.Pages
         {
             InitializeComponent();
             DataContext = new HomeViewModel();
-        }
-
-        private void SignInButton_Click(object sender, RoutedEventArgs e)
-        {
-            ((HomeViewModel)DataContext).SignIn();
         }
 
         private void NewcomerButton_Click(object sender, RoutedEventArgs e)
@@ -66,6 +62,23 @@ namespace CcvSignIn.Pages
                 ((HomeViewModel)DataContext).DataFilename = dlg.FileName;
                 ((HomeViewModel)DataContext).Children = new CsvService().LoadData(dlg.FileName);
             }
+        }
+
+        private void SignInButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((HomeViewModel)DataContext).SignIn();
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = ModernDialog.ShowMessage("Are you sure you want to clear this record?", "Warning", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) ((HomeViewModel)DataContext).ClearSignIn();
+        }
+
+        private void ChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = ModernDialog.ShowMessage("Are you sure you want to change this record?", "Warning", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) ((HomeViewModel)DataContext).ChangeSignIn();
         }
     }
 }

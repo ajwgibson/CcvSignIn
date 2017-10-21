@@ -86,12 +86,12 @@ namespace CcvSignIn.Service
                     "Printing {0} labels for {1} [{2}] using printer {3}",
                     Copies,
                     child.Fullname,
-                    child.Id,
+                    child.Label,
                     Printer.Name);
 
                 Label.SetObjectText("NAME", string.Format("{0}\r\n{1}", first, last));
                 Label.SetObjectText("ENVIRONMENT", child.RoomLabel);
-                Label.SetObjectText("NUMBER", child.Id.ToString());
+                Label.SetObjectText("NUMBER", child.Label);
 
                 var signedInAt = child.SignedInAt.HasValue ? child.SignedInAt.Value : DateTime.Now;
                 if (PrintForSunday && !(signedInAt.DayOfWeek == DayOfWeek.Sunday)) signedInAt = signedInAt.Next(DayOfWeek.Sunday);

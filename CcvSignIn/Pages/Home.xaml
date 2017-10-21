@@ -98,11 +98,6 @@
                 </StackPanel>
 
                 <StackPanel>
-                    <Label Content="Unique ID" />
-                    <TextBlock Text="{Binding SelectedChild.Id, Mode=OneWay}" Style="{StaticResource Heading2}" Margin="0,0,0,8" VerticalAlignment="Center" />
-                </StackPanel>
-
-                <StackPanel>
                     <Label Content="Environment" VerticalAlignment="Top"/>
                     <ListBox ItemsSource="{Binding AvailableRooms}"
                             SelectedItem="{Binding SelectedRoom}">
@@ -117,10 +112,25 @@
                     </ListBox>
                 </StackPanel>
 
-                <Button Content="{Binding SignInButtonText}" 
-                    Margin="100,16,0,0" HorizontalAlignment="Left" 
-                    IsEnabled="{Binding SignInEnabled}" 
-                    Click="SignInButton_Click" />
+                <StackPanel Orientation="Horizontal" Margin="100,16,0,0">
+
+                    <Button Content="Sign in" 
+                        HorizontalAlignment="Left" 
+                        Visibility="{Binding SignInButtonVisibility}" 
+                        IsEnabled="{Binding SignInEnabled}" 
+                        Click="SignInButton_Click" />
+
+                    <Button Content="Clear" 
+                        HorizontalAlignment="Left" 
+                        Visibility="{Binding ClearButtonVisibility}" 
+                        Click="ClearButton_Click" />
+
+                    <Button Content="Change" 
+                        HorizontalAlignment="Left" 
+                        Visibility="{Binding ChangeButtonVisibility}" 
+                        Click="ChangeButton_Click" />
+
+                </StackPanel>
 
                 <StackPanel Visibility="{Binding UpdateContactDetailsVisibility}" Margin="0,20,0,8">
                     <Image Source="pack://application:,,,/CcvSignIn;component/Resources/warning.png" Width="24" Margin="60,0,15,0" />
